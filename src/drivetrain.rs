@@ -1,5 +1,6 @@
 use glam::Vec2;
 use vexide::prelude::*;
+use vexide::smart::PortError;
 
 pub struct Drivetrain {
     pub motors: [(Motor, f32); 4], // Motor and rotation for the holonomic drive
@@ -8,7 +9,7 @@ pub struct Drivetrain {
 impl Drivetrain {
     // Translate because i cant name it move and translate is too
     // long to type out for my lazy ass so i shortened it
-    pub fn trans(&mut self, direction: Vec2, speed: f32, rotation: f32) {
+    pub fn trans(&mut self, direction: Vec2, speed: f32, rotation: f32) -> Result<(), PortError> {
         let dir = direction.normalize_or_zero();
 
         let mut outputs = [0f32; 4];
@@ -21,7 +22,8 @@ impl Drivetrain {
         }
 
         for (i, (motor, _)) in self.motors.iter_mut().enumerate() {
-            motor.set_voltage(outputs[i] as f64).unwrap();
+            motor.set_voltage(outputs[i] as f64)?;
         }
+        Ok(())
     }
 }
