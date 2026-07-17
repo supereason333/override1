@@ -32,7 +32,7 @@ impl Compete for Robot {
 
             // Drivetrain movement
             let movement = Vec2 {
-                // x and y is normalized Vec2 is not normalized
+                // x and y is normalized Vec2 is not normalized.
                 x: state.left_stick.x() as f32,
                 y: state.left_stick.y() as f32,
             };
