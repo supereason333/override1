@@ -40,12 +40,19 @@ impl Compete for Robot {
 
             self.drivetrain.trans(movement, rotation).unwrap();
 
+            let lift_speed;
+            if state.button_r2.is_pressed() {
+                lift_speed = 20;
+            } else {
+                lift_speed = 80;
+            }
+
             // Arm movement
             for motor in self.arm.lift.iter_mut() {
                 if state.button_l1.is_pressed() {
-                    motor.set_velocity(100).unwrap();
+                    motor.set_velocity(-lift_speed).unwrap();
                 } else if state.button_l2.is_pressed() {
-                    motor.set_velocity(-100).unwrap();
+                    motor.set_velocity(lift_speed).unwrap();
                 } else {
                     motor.set_velocity(0).unwrap();
                     motor.brake(BrakeMode::Hold).unwrap();

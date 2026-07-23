@@ -9,7 +9,7 @@ pub struct Drivetrain {
 
 impl Drivetrain {
     // Translate because i cant name it move and translate is too
-    // long to type out for my lazy ass so i shortened it
+    // long to type out for my lazy ahh so i shortened it
     pub fn trans(&mut self, direction: Vec2, rotation: f32) -> Result<(), PortError> {
         // let direction = direction * Vec2 { x: -1.0, y: 1.0 };
         let speed = direction.length();
