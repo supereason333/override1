@@ -74,27 +74,27 @@ async fn main(p: Peripherals) {
         controller: p.primary_controller,
         arm: Arm {
             lift: [
-                Motor::new(p.port_6, Gearset::Red, Direction::Forward),
-                Motor::new(p.port_10, Gearset::Red, Direction::Reverse),
+                Motor::new(p.port_8, Gearset::Red, Direction::Forward),
+                Motor::new(p.port_11, Gearset::Red, Direction::Reverse),
             ],
             claw: AdiDigitalOut::new(p.adi_a),
         },
         drivetrain: Drivetrain {
             motors: [
                 (
-                    Motor::new(p.port_9, Gearset::Green, Direction::Forward),
+                    Motor::new(p.port_7, Gearset::Green, Direction::Forward),
                     Angle::from_degrees(45.0),
                 ),
                 (
-                    Motor::new(p.port_20, Gearset::Green, Direction::Forward),
+                    Motor::new(p.port_10, Gearset::Green, Direction::Forward),
                     Angle::from_degrees(135.0),
                 ),
                 (
-                    Motor::new(p.port_11, Gearset::Green, Direction::Forward),
+                    Motor::new(p.port_9, Gearset::Green, Direction::Forward),
                     Angle::from_degrees(225.0),
                 ),
                 (
-                    Motor::new(p.port_8, Gearset::Green, Direction::Forward),
+                    Motor::new(p.port_20, Gearset::Green, Direction::Forward),
                     Angle::from_degrees(315.0),
                 ),
             ],

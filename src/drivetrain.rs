@@ -4,14 +4,12 @@ use vexide::prelude::*;
 use vexide::smart::PortError;
 
 pub struct Drivetrain {
-    pub motors: [(Motor, Angle); 4], // Motor and rotation for the holonomic drive
+    pub motors: [(Motor, Angle); 4],
 }
 
 impl Drivetrain {
-    // Translate because i cant name it move and translate is too
-    // long to type out for my lazy ahh so i shortened it
+    // Translate because i cant name it move
     pub fn trans(&mut self, direction: Vec2, rotation: f32) -> Result<(), PortError> {
-        // let direction = direction * Vec2 { x: -1.0, y: 1.0 };
         let speed = direction.length();
         let dir = direction.normalize_or_zero();
 
