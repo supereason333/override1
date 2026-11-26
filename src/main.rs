@@ -9,7 +9,8 @@ use crate::drivetrain::Drivetrain;
 
 struct Arm {
     lift: [Motor; 2],
-    claw: AdiDigitalOut,
+    clamp: AdiDigitalOut,
+    clamp_swivel: AdiDigitalOut,
 }
 
 struct Robot {
@@ -38,7 +39,7 @@ impl Compete for Robot {
             };
             let rotation = state.right_stick.x() as f32;
 
-            self.drivetrain.trans(movement, rotation).unwrap();
+            self.drivetrain.trans(movement, rotation).ok();
 
             let lift_speed;
             if state.button_r2.is_pressed() {
@@ -49,18 +50,21 @@ impl Compete for Robot {
 
             // Arm movement
             for motor in self.arm.lift.iter_mut() {
-                if state.button_l1.is_pressed() {
-                    motor.set_velocity(-lift_speed).unwrap();
-                } else if state.button_l2.is_pressed() {
-                    motor.set_velocity(lift_speed).unwrap();
+                if state.button_r1.is_pressed() {
+                    motor.set_velocity(-lift_speed).ok();
+                } else if state.button_r2.is_pressed() {
+                    motor.set_velocity(lift_speed).ok();
                 } else {
-                    motor.set_velocity(0).unwrap();
-                    motor.brake(BrakeMode::Hold).unwrap();
+                    motor.set_velocity(0).ok();
+                    motor.brake(BrakeMode::Hold).ok();
                 }
             }
 
-            if state.button_r1.is_now_pressed() {
-                self.arm.claw.toggle().unwrap();
+            if state.button_l1.is_now_pressed() {
+                self.arm.clamp.toggle().ok();
+            }
+            if state.button_l2.is_now_pressed() {
+                self.arm.clamp_swivel.toggle().ok();
             }
 
             sleep(Controller::UPDATE_INTERVAL).await;
@@ -74,10 +78,11 @@ async fn main(p: Peripherals) {
         controller: p.primary_controller,
         arm: Arm {
             lift: [
-                Motor::new(p.port_8, Gearset::Red, Direction::Forward),
-                Motor::new(p.port_11, Gearset::Red, Direction::Reverse),
+                Motor::new(p.port_11, Gearset::Red, Direction::Forward),
+                Motor::new(p.port_8, Gearset::Red, Direction::Reverse),
             ],
-            claw: AdiDigitalOut::new(p.adi_a),
+            clamp: AdiDigitalOut::new(p.adi_g),
+            clamp_swivel: AdiDigitalOut::new(p.adi_h),
         },
         drivetrain: Drivetrain {
             motors: [

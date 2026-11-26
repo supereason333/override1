@@ -35,7 +35,9 @@ impl Drivetrain {
         }
 
         for (i, (motor, _)) in self.motors.iter_mut().enumerate() {
-            motor.set_voltage(outputs[i] as f64 * (12.0 / max_mag) as f64)?;
+            motor
+                .set_voltage(outputs[i] as f64 * (12.0 / max_mag) as f64)
+                .ok();
         }
         Ok(())
     }
